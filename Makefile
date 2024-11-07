@@ -1,15 +1,27 @@
 # Variáveis
 CXX = g++
-CXXFLAGS = -Isrc/include -Lsrc/lib -g -mconsole -fdiagnostics-color=always -lmingw32 -lSDL2main -lSDL2
-SRCS = $(wildcard *.cpp)  # Todos os arquivos .cpp no diretório atual
-TARGET = main.exe
+CXXFLAGS = -Iinclude -g
+LDFLAGS = -lmingw32 -lSDL2main -lSDL2 -mconsole
+SRC = $(wildcard src/*.cpp)
+OBJ = $(patsubst src/%.cpp, build/obj/%.o, $(SRC))
+TARGET = build/bin/main.exe
 
 # Regra padrão
-all: $(TARGET)
+all: build_dirs $(TARGET)
 
-$(TARGET): $(SRCS)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+# Diretórios necessários
+build_dirs:
+	if not exist build\obj mkdir build\obj
+	if not exist build\bin mkdir build\bin
 
-# Limpeza dos arquivos gerados
+# Criação do executável
+$(TARGET): $(OBJ)
+	$(CXX) -o $@ $^ $(LDFLAGS)
+
+# Compilação de arquivos .cpp para build/obj
+build/obj/%.o: src/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Limpeza
 clean:
-	rm -f $(TARGET)
+	del /Q build\obj\*.o build\bin\main.exe

@@ -6,7 +6,7 @@
             "name": "Debug C++ Program",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/main.exe",  // Adjust the path if needed
+            "program": "${workspaceFolder}/build/bin/main.exe",  // Adjust the path if needed
             "args": [],  // You can specify command line arguments here
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",  // Current working directory
